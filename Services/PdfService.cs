@@ -13,44 +13,66 @@ namespace KajsaJosefssonCV.Services
             try
             {
                 PdfDocument document = new PdfDocument();
-                document.Info.Title = "Mitt CV";
+                document.Info.Title = "CV – " + viewModel.HeaderName;
 
                 PdfPage page = document.AddPage();
                 XGraphics gfx = XGraphics.FromPdfPage(page);
 
-                XFont fontTitle = new XFont("Verdana", 20, XFontStyle.Bold);
-                XFont fontHeader = new XFont("Verdana", 14, XFontStyle.Bold);
+                // App-färger: lila/beige
+                XColor purpleColor = XColor.FromArgb(140, 102, 204); // #8C66CC
+                XColor lightPurple = XColor.FromArgb(179, 153, 230); // #B399E6
+                XColor beigeColor = XColor.FromArgb(245, 245, 220); // Beige
+
+                XBrush brushHeaderText = new XSolidBrush(beigeColor);
+                XBrush brushSubHeader = new XSolidBrush(purpleColor);
+                XBrush brushNormalText = XBrushes.Black;
+
+                // Fonts
+                XFont fontName = new XFont("Verdana", 24, XFontStyle.Bold);
+                XFont fontTitle = new XFont("Verdana", 14, XFontStyle.Bold);
                 XFont fontNormal = new XFont("Verdana", 12, XFontStyle.Regular);
 
                 double yPoint = 40;
 
-                // Header
-                gfx.DrawString(viewModel.HeaderName, fontTitle, XBrushes.Black, new XRect(40, yPoint, page.Width - 80, 40), XStringFormats.TopLeft);
-                yPoint += 30;
-                gfx.DrawString(viewModel.HeaderTitle, fontNormal, XBrushes.Black, new XRect(40, yPoint, page.Width - 80, 20), XStringFormats.TopLeft);
-                yPoint += 25;
-                gfx.DrawString(viewModel.HeaderEmail, fontNormal, XBrushes.Black, new XRect(40, yPoint, page.Width - 80, 20), XStringFormats.TopLeft);
-                yPoint += 20;
-                gfx.DrawString(viewModel.HeaderPhone, fontNormal, XBrushes.Black, new XRect(40, yPoint, page.Width - 80, 20), XStringFormats.TopLeft);
-                yPoint += 40;
+                // Header bakgrund
+                gfx.DrawRectangle(new XSolidBrush(lightPurple), 0, 0, page.Width, 100);
 
-                // Lägg till innehållet från Tabs
+                // Namn
+                gfx.DrawString(viewModel.HeaderName, fontName, brushHeaderText, new XRect(40, yPoint, page.Width - 80, 30), XStringFormats.TopLeft);
+                yPoint += 35;
+
+                // Titel
+                gfx.DrawString(viewModel.HeaderTitle, fontTitle, brushHeaderText, new XRect(40, yPoint, page.Width - 80, 20), XStringFormats.TopLeft);
+                yPoint += 25;
+
+                // Kontaktinfo
+                gfx.DrawString("Email: " + viewModel.HeaderEmail, fontNormal, brushHeaderText, new XRect(40, yPoint, page.Width - 80, 20), XStringFormats.TopLeft);
+                yPoint += 18;
+                gfx.DrawString("Telefon: " + viewModel.HeaderPhone, fontNormal, brushHeaderText, new XRect(40, yPoint, page.Width - 80, 20), XStringFormats.TopLeft);
+                yPoint += 35;
+
+                // Divider-linje
+                gfx.DrawLine(new XPen(purpleColor, 1.5), 40, yPoint, page.Width - 40, yPoint);
+                yPoint += 20;
+
+                // Flikar / innehåll
                 foreach (var tab in viewModel.Tabs)
                 {
-                    gfx.DrawString(tab.TabHeader, fontHeader, XBrushes.DarkBlue, new XRect(40, yPoint, page.Width - 80, 20), XStringFormats.TopLeft);
-                    yPoint += 25;
+                    // Tab header
+                    gfx.DrawString(tab.TabHeader, fontTitle, brushSubHeader, new XRect(40, yPoint, page.Width - 80, 20), XStringFormats.TopLeft);
+                    yPoint += 22;
 
-                    // Om tabben har en sträng att visa, använd den. Annars kan du anpassa för mer data
+                    // Tab content
                     if (!string.IsNullOrEmpty(tab.DisplayContent))
                     {
-                        gfx.DrawString(tab.DisplayContent, fontNormal, XBrushes.Black, new XRect(50, yPoint, page.Width - 100, 500), XStringFormats.TopLeft);
-                        yPoint += 50;
+                        gfx.DrawString(tab.DisplayContent, fontNormal, brushNormalText, new XRect(50, yPoint, page.Width - 100, 500), XStringFormats.TopLeft);
+                        yPoint += 45;
                     }
 
                     yPoint += 10;
 
-                    // Om yPoint är för långt ner på sidan, skapa ny sida
-                    if (yPoint > page.Height - 100)
+                    // Ny sida om yPoint är för långt ner
+                    if (yPoint > page.Height - 80)
                     {
                         page = document.AddPage();
                         gfx = XGraphics.FromPdfPage(page);
