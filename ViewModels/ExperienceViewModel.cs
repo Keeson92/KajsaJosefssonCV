@@ -16,6 +16,7 @@ namespace KajsaJosefssonCV.ViewModels
 
         public ExperienceViewModel()
         {
+            TabHeader = "Arbetslivserfarenhet";
             Experiences = new ObservableCollection<ExperienceModel>
 {
                 new ExperienceModel

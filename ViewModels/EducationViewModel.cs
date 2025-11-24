@@ -9,12 +9,22 @@ using CommunityToolkit.Mvvm;
 
 namespace KajsaJosefssonCV.ViewModels
 {
+    public class EducationModel
+    {
+        public string Degree { get; set; }
+        public string Institution { get; set; }
+        public string Period { get; set; }
+        public string Notes { get; set; }
+    }
+
     public class EducationViewModel : BaseTabViewModel
     {
         public ObservableCollection<EducationModel> Educations { get; }
 
         public EducationViewModel()
         {
+            TabHeader = "Utbildning";
+
             Educations = new ObservableCollection<EducationModel>
             {
                 new EducationModel
@@ -56,21 +66,17 @@ namespace KajsaJosefssonCV.ViewModels
 
             foreach (var edu in Educations)
             {
-                // Lägg till huvudinfo
                 ContentItems.Add($"{edu.Degree} - {edu.Institution} ({edu.Period})");
 
-                // Lägg till noter, dela på radbrytningar
                 if (!string.IsNullOrWhiteSpace(edu.Notes))
                 {
-                    var notesLines = edu.Notes.Split('\n');
-                    foreach (var line in notesLines)
+                    foreach (var line in edu.Notes.Split('\n'))
                     {
-                        ContentItems.Add("  " + line.Trim()); // lite indrag för noter
+                        ContentItems.Add("  " + line.Trim());
                     }
                 }
 
-                // Extra rad mellan utbildningar
-                ContentItems.Add("");
+                ContentItems.Add(""); // extra rad mellan utbildningar
             }
         }
     }

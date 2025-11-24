@@ -16,6 +16,7 @@ namespace KajsaJosefssonCV.ViewModels
 
         public SkillsViewModel()
         {
+            TabHeader = "Kompetenser";
             Skills = new ObservableCollection<SkillModel>
             {
                 new SkillModel { Name = "B-körkort", Level = "God" },
