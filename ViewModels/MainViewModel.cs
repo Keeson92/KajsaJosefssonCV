@@ -1,21 +1,14 @@
-﻿using CommunityToolkit.Mvvm;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KajsaJosefssonCV.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KajsaJosefssonCV.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
-        // Flikarna i TabControl
         public ObservableCollection<BaseTabViewModel> Tabs { get; }
-
         private BaseTabViewModel _selectedTab;
         private readonly PdfService _pdfService;
 
@@ -27,11 +20,11 @@ namespace KajsaJosefssonCV.ViewModels
             set => SetProperty(ref _selectedTab, value);
         }
 
-        // Header-information som visas högst upp
+        // Header-information
         public string HeaderName => "Kajsa Josefsson";
-        public string HeaderEmail => "kajsa.josefsson92@hotmail.com";
-        public string HeaderPhone => "073-089 15 12";
         public string HeaderTitle => "Dataekonom söker jobb efter examen inom både IT och Ekonomi-sektorn";
+        public string HeaderEmail => "kajsa.josefsson@email.com";
+        public string HeaderPhone => "070-123 45 67";
 
         public MainViewModel()
         {
@@ -39,20 +32,19 @@ namespace KajsaJosefssonCV.ViewModels
 
             ExportPdfCommand = new RelayCommand(() =>
             {
-                _pdfService.CreatePdf();
+                _pdfService.CreatePdf(this);
             });
 
-            // Skapa flikarna med rätt ViewModels
+            // Skapa flikarna
             Tabs = new ObservableCollection<BaseTabViewModel>
             {
-                new HomeViewModel { TabHeader = "Hem" },
-                new AboutViewModel { TabHeader = "Om mig" },
-                new ExperienceViewModel { TabHeader = "Arbetslivserfarenhet" },
-                new EducationViewModel { TabHeader = "Utbildning" },
-                new SkillsViewModel { TabHeader = "Kompetenser" }
+                new HomeViewModel { TabHeader = "Hem", DisplayContent = "Välkommen till mitt CV!" },
+                new AboutViewModel { TabHeader = "Om mig", DisplayContent = "Jag är en driven dataekonom med intresse för BI och IT." },
+                new ExperienceViewModel { TabHeader = "Arbetslivserfarenhet", DisplayContent = "Jobbat med ekonomisystem och dataanalys." },
+                new EducationViewModel { TabHeader = "Utbildning", DisplayContent = "Examen inom Ekonomi och IT." },
+                new SkillsViewModel { TabHeader = "Kompetenser", DisplayContent = "Excel, Power BI, SQL, WPF, C#." }
             };
 
-            // Välj första fliken som standard
             SelectedTab = Tabs.FirstOrDefault();
         }
     }

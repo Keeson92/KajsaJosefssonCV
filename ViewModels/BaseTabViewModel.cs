@@ -11,5 +11,6 @@ namespace KajsaJosefssonCV.ViewModels
     public class BaseTabViewModel : ObservableObject
     {
         public string TabHeader { get; set; }
+        public string DisplayContent { get; set; }
     }
 }
