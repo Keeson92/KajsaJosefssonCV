@@ -13,7 +13,6 @@ namespace KajsaJosefssonCV.ViewModels
     {
         public ObservableCollection<EducationModel> Educations { get; }
 
-
         public EducationViewModel()
         {
             Educations = new ObservableCollection<EducationModel>
@@ -44,9 +43,35 @@ namespace KajsaJosefssonCV.ViewModels
                     Degree = "Gymnasieexamen",
                     Institution = "Tingsholmsgymnasiet",
                     Period = "2010 - 2013",
-                    Notes = "Estetiska programmet, med inriktning teater. \n Medverkade i slutmusikalen Hairspray, assisterade även som ljustekniker åt slutproduktionen året dessförinnan (Footloose)."
+                    Notes = "Estetiska programmet, med inriktning teater.\nMedverkade i slutmusikalen Hairspray, assisterade även som ljustekniker åt slutproduktionen året dessförinnan (Footloose)."
                 }
             };
+
+            PopulateContentItems();
+        }
+
+        private void PopulateContentItems()
+        {
+            ContentItems = new ObservableCollection<string>();
+
+            foreach (var edu in Educations)
+            {
+                // Lägg till huvudinfo
+                ContentItems.Add($"{edu.Degree} - {edu.Institution} ({edu.Period})");
+
+                // Lägg till noter, dela på radbrytningar
+                if (!string.IsNullOrWhiteSpace(edu.Notes))
+                {
+                    var notesLines = edu.Notes.Split('\n');
+                    foreach (var line in notesLines)
+                    {
+                        ContentItems.Add("  " + line.Trim()); // lite indrag för noter
+                    }
+                }
+
+                // Extra rad mellan utbildningar
+                ContentItems.Add("");
+            }
         }
     }
 }

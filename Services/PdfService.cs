@@ -62,22 +62,25 @@ namespace KajsaJosefssonCV.Services
                     gfx.DrawString(tab.TabHeader, fontTitle, brushSubHeader, new XRect(40, yPoint, page.Width - 80, 20), XStringFormats.TopLeft);
                     yPoint += 22;
 
-                    // Tab content
-                    if (!string.IsNullOrEmpty(tab.DisplayContent))
+                    // Tab content: iterera över ContentItems
+                    foreach (var item in tab.ContentItems)
                     {
-                        gfx.DrawString(tab.DisplayContent, fontNormal, brushNormalText, new XRect(50, yPoint, page.Width - 100, 500), XStringFormats.TopLeft);
-                        yPoint += 45;
+                        if (!string.IsNullOrWhiteSpace(item))
+                        {
+                            gfx.DrawString(item, fontNormal, brushNormalText, new XRect(50, yPoint, page.Width - 100, 500), XStringFormats.TopLeft);
+                            yPoint += 20; // justera höjd mellan rader
+                        }
+
+                        // Ny sida om yPoint är för långt ner
+                        if (yPoint > page.Height - 80)
+                        {
+                            page = document.AddPage();
+                            gfx = XGraphics.FromPdfPage(page);
+                            yPoint = 40;
+                        }
                     }
 
-                    yPoint += 10;
-
-                    // Ny sida om yPoint är för långt ner
-                    if (yPoint > page.Height - 80)
-                    {
-                        page = document.AddPage();
-                        gfx = XGraphics.FromPdfPage(page);
-                        yPoint = 40;
-                    }
+                    yPoint += 10; // extra mellanrum efter varje tab
                 }
 
                 // Spara PDF i Documents

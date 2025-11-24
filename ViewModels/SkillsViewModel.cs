@@ -39,6 +39,20 @@ namespace KajsaJosefssonCV.ViewModels
                 new SkillModel { Name = "Processförbättring & systemförståelse", Level = "Medel" },
                 new SkillModel { Name = "Dokumentation och kvalitetsarbete", Level = "Medel" }
             };
+
+            PopulateContentItems();
+        }
+        private void PopulateContentItems()
+        {
+            ContentItems = new ObservableCollection<string>();
+
+            foreach (var skill in Skills)
+            {
+                if (!string.IsNullOrWhiteSpace(skill.Name))
+                {
+                    ContentItems.Add($"• {skill.Name} ({skill.Level})"); // namn + nivå
+                }
+            }
         }
     }
 }

@@ -35,14 +35,33 @@ namespace KajsaJosefssonCV.ViewModels
                 _pdfService.CreatePdf(this);
             });
 
-            // Skapa flikarna
+            // Skapa flikarna med ObservableCollection<string>
+            var aboutTab = new AboutViewModel { TabHeader = "Om mig" };
+            aboutTab.PopulateContentItems();
+
             Tabs = new ObservableCollection<BaseTabViewModel>
             {
-                new HomeViewModel { TabHeader = "Hem", DisplayContent = "Välkommen till mitt CV!" },
-                new AboutViewModel { TabHeader = "Om mig", DisplayContent = "Jag är en driven dataekonom med intresse för BI och IT." },
-                new ExperienceViewModel { TabHeader = "Arbetslivserfarenhet", DisplayContent = "Jobbat med ekonomisystem och dataanalys." },
-                new EducationViewModel { TabHeader = "Utbildning", DisplayContent = "Examen inom Ekonomi och IT." },
-                new SkillsViewModel { TabHeader = "Kompetenser", DisplayContent = "Excel, Power BI, SQL, WPF, C#." }
+                new HomeViewModel
+                {
+                    TabHeader = "Hem",
+                    ContentItems = new ObservableCollection<string> { "Välkommen till mitt CV!" }
+                },
+                aboutTab,
+                new ExperienceViewModel
+                {
+                    TabHeader = "Arbetslivserfarenhet",
+                    ContentItems = new ObservableCollection<string> { "Jobbat med ekonomisystem och dataanalys." }
+                },
+                new EducationViewModel
+                {
+                    TabHeader = "Utbildning",
+                    ContentItems = new ObservableCollection<string> { "Examen inom Ekonomi och IT." }
+                },
+                new SkillsViewModel
+                {
+                    TabHeader = "Kompetenser",
+                    ContentItems = new ObservableCollection<string> { "Excel", "Power BI", "SQL", "WPF", "C#" }
+                }
             };
 
             SelectedTab = Tabs.FirstOrDefault();

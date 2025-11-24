@@ -61,6 +61,30 @@ namespace KajsaJosefssonCV.ViewModels
                     Description = "Diverse kundrelaterade arbeten på deltid upp till 75%, som kundtjänstmedarbetare och servitris. \n Här lärde jag mig multitasking, ta vara på kundkrav och uppnå kundnöjdhet. \n Lite allt i allo, med vissa administrativa uppgifter med, så som kalasbokningar, spärrtjänst och justeringar mot fakturor \n exempelvis kreditering eller justering av datum. Via Transcom fick jag erfarenhet av systemarbete med bland annat Siebel och CABS m.m."
                 }
             };
+            PopulateContentItems();
+        }
+        private void PopulateContentItems()
+        {
+            ContentItems = new ObservableCollection<string>();
+
+            foreach (var exp in Experiences)
+            {
+                // Lägg till huvudinfo
+                ContentItems.Add($"{exp.Role} - {exp.Company} ({exp.Period})");
+
+                // Lägg till notes, dela på radbrytningar
+                if (!string.IsNullOrWhiteSpace(exp.Description))
+                {
+                    var notesLines = exp.Description.Split('\n');
+                    foreach (var line in notesLines)
+                    {
+                        ContentItems.Add("  " + line.Trim()); // indrag
+                    }
+                }
+
+                // Extra rad mellan erfarenheter
+                ContentItems.Add("");
+            }
         }
     }
 }
