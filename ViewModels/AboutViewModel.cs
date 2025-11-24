@@ -10,7 +10,7 @@ namespace KajsaJosefssonCV.ViewModels
 {
     public class AboutViewModel : BaseTabViewModel
     {
-        private string LongText =>
+        public string LongText =>
             "Jag befinner mig i början av min karriär och tar min kandidatexamen i juni 2026.\n" +
             "Drivs av att förstå och förbättra samspelet mellan system, data och ekonomi.\n" +
             "Jag trivs där struktur möter analys, i arbetet med att skapa ordning, hitta samband och förenkla processer.\n" +
